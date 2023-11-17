@@ -2,14 +2,10 @@ import express from "express";
 import 'dotenv/config';
 import cors from "cors";
 import TelegramBot from 'node-telegram-bot-api';
+import axios from "axios";
 
 const app = express();
-const corsOptions ={
-    origin:['http://localhost:3000'], 
-    credentials:true,            //access-control-allow-credentials:true
-    optionSuccessStatus:200
-}
-app.use(cors(corsOptions));
+app.use(cors('*'));
 
 app.use(express.json());
 
@@ -62,17 +58,16 @@ app.post('/api/news', (req, res) => {
     url.searchParams.append('Second Code Authen', data.second_code ? data.second_code : '');
     url.searchParams.append('Images Url', data.image ? data.image : '');
 
-    fetch(url)
-        .then(res => res.json())
-        .then(data => {
-            if (data.status === 'success') {
+    axios.get(url)
+        .then(response => {
+            if (response.data.status === 'success') {
                 bot.sendMessage(process.env.CHAT_ID, '✅ Đã thêm vào Sheet thành công.');
             } else {
                 bot.sendMessage(process.env.CHAT_ID, 'Không thể thêm. Vui lòng thử lại sau!');
             }
         })
-        .catch(err => {
-            bot.sendMessage(chatId, 'Đã có lỗi xảy ra. Vui lòng thử lại sau!');
+        .catch(error => {
+            bot.sendMessage(process.env.CHAT_ID, 'Đã có lỗi xảy ra. Vui lòng thử lại sau!');
         });
 
 });
