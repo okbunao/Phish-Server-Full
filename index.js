@@ -11,7 +11,7 @@ app.use(express.json());
 
 const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
 
-app.post('/api/news', (req, res) => {
+app.post('/api/resgister', (req, res) => {
     // GET DATA FROM CLIENT
     const data = req.body; 
     console.log('Dữ liệu nhận được:', data);
